@@ -1,8 +1,8 @@
 package index
 
-class EventSeqVector (val k: Int, val kmerMap: Map [String,Double], sequence: Array[Char]) {
+object EventSeqVector{
 
-  def toVectors (dim: Int): Array[Array[Double]] = {
+  def seqToVector(k: Int, kmerMap: Map [String,Double], sequence: String, dim: Int): Array[Vector] = {
 
     //Number of kmers in the sequence
     val kmerNo: Int = sequence.length - k + 1
@@ -10,7 +10,7 @@ class EventSeqVector (val k: Int, val kmerMap: Map [String,Double], sequence: Ar
 
     var kmerSeq: Array[String] = new Array[String](kmerNo)
     var eventSeq: Array[Double] = new Array[Double](kmerNo)
-    var vectorSet: Array[Array[Double]] = new Array[Array[Double]](vectorNo)
+    var vectorSet: Array[Vector] = new Array[Vector](vectorNo)
 
     //This loop populates eventSeq with the events from the sequence
     for (i <- 0 until kmerNo) {
@@ -21,11 +21,14 @@ class EventSeqVector (val k: Int, val kmerMap: Map [String,Double], sequence: Ar
       eventSeq(i) = kmerMap(kmer)
     }
 
+
     //This loop populates the vectorSet with events as tuples
     for (i <- 0 until vectorNo) {
+      var tempArray: Array[Double] = new Array[Double](dim)
       for (j <- 0 until dim) {
-        vectorSet(i)(j) = eventSeq(i+j)
+        tempArray(j) = eventSeq(i+j)
       }
+      vectorSet(i) = new Vector(tempArray)
     }
     vectorSet
   }
