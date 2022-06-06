@@ -1,5 +1,5 @@
 package index
 
-class KDTreeNode [Vector] (var value: Vector, var left: KDTreeNode[Vector], var right: KDTreeNode[Vector]) {
+class KDTreeNode [A] (var value: A, var left: KDTreeNode[A], var right: KDTreeNode[Vector]) {
 
 }

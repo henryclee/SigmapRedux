@@ -2,6 +2,9 @@ package index
 
 object EventSeqVector{
 
+  //Converts a sequence of nucleotide bases into an array of vectors, where each vector represents
+  //a tuple of consecutive "events" (expected current, as a double) from each kmer from kmerMap.
+  //k is the size of the kmer.
   def seqToVector(k: Int, kmerMap: Map [String,Double], sequence: String, dim: Int): Array[Vector] = {
 
     //Number of kmers in the sequence
@@ -21,7 +24,6 @@ object EventSeqVector{
       eventSeq(i) = kmerMap(kmer)
     }
 
-
     //This loop populates the vectorSet with events as tuples
     for (i <- 0 until vectorNo) {
       var tempArray: Array[Double] = new Array[Double](dim)
@@ -32,6 +34,4 @@ object EventSeqVector{
     }
     vectorSet
   }
-
-
 }

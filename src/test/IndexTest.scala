@@ -6,11 +6,13 @@ import index.EventSeqVector._
 import index.Vector
 import index.KDTreeNode
 import index.KDTree
+import helper._
+
 
 class IndexTest extends FunSuite {
 
+  //Creates KmerMap with arbitrary values
   def InitKmerMap(): Map[String,Double] = {
-
     var kmerMap: Map[String, Double] = Map()
     val nucleotide: Array [String] = Array ("A","T","C","G")
 
@@ -34,8 +36,8 @@ class IndexTest extends FunSuite {
     kmerMap
   }
 
+  //Reads a file and converts it into an array[String] representing the sequence
   def ReadBases(filename: String, length: Int):Array[String] = {
-
     var returnArray: Array[String] = new Array[String](length)
     val file: BufferedSource = Source.fromFile(filename)
     var i: Int = 0
@@ -50,16 +52,19 @@ class IndexTest extends FunSuite {
   test("Indexing") {
 
     val length: Int = 10
-    val filename: String = "data/RandomBases.txt"
+    val basesFile: String = "data/RandomBases.txt"
+    val kmerModel: String = "data/6merModel.txt"
 
-    val kmerMap: Map[String,Double] = InitKmerMap()
-    val nuclSequences: Array[String] = ReadBases(filename,length)
+    //val kmerMap: Map[String,Double] = InitKmerMap()
+    val kmerMap: Map[String, Double] = fileToMap(kmerModel)
 
-    val vectorSet1: Array[Vector] = seqToVector(5,kmerMap,nuclSequences(0),10)
+    val nuclSequences: Array[String] = ReadBases(basesFile,length)
 
-    println (kmerMap("CATAG"))
-    println (kmerMap("ATAGC"))
-    vectorSet1(0).returnValue
+    val vectorSet1: Array[Vector] = seqToVector(6,kmerMap,nuclSequences(0),10)
+
+    //println (kmerMap("CATAGA"))
+    //println (kmerMap("ATAGCA"))
+    //vectorSet1(0).returnValue
 
     //Generate KD Tree
     val kdTree: KDTreeNode[Vector] = KDTree.makeKDTree(vectorSet1)
