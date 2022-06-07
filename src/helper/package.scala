@@ -11,4 +11,16 @@ package object helper {
     }
     kmerSignalMap
   }
+
+  //Reads a file and converts it into an array[String] representing the sequence
+  def readBases(filename: String, length: Int): Array[String] = {
+    var returnArray: Array[String] = new Array[String](length)
+    val file: BufferedSource = Source.fromFile(filename)
+    var i: Int = 0
+    for (line <- file.getLines()) {
+      returnArray(i) = line
+      i += 1
+    }
+    returnArray
+  }
 }

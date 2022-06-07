@@ -36,18 +36,7 @@ class IndexTest extends FunSuite {
     kmerMap
   }
 
-  //Reads a file and converts it into an array[String] representing the sequence
-  def ReadBases(filename: String, length: Int):Array[String] = {
-    var returnArray: Array[String] = new Array[String](length)
-    val file: BufferedSource = Source.fromFile(filename)
-    var i: Int = 0
-    for (line <- file.getLines()){
-      returnArray(i) = line
-      i += 1
-    }
-    returnArray
 
-  }
 
   test("Indexing") {
 
@@ -58,7 +47,7 @@ class IndexTest extends FunSuite {
     //val kmerMap: Map[String,Double] = InitKmerMap()
     val kmerMap: Map[String, Double] = fileToMap(kmerModel)
 
-    val nuclSequences: Array[String] = ReadBases(basesFile,length)
+    val nuclSequences: Array[String] = readBases(basesFile,length)
 
     val vectorSet1: Array[Vector] = seqToVector(6,kmerMap,nuclSequences(0),10)
 
