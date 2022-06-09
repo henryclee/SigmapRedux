@@ -11,43 +11,16 @@ import helper._
 
 class IndexTest extends FunSuite {
 
-  //Creates KmerMap with arbitrary values
-  def InitKmerMap(): Map[String,Double] = {
-    var kmerMap: Map[String, Double] = Map()
-    val nucleotide: Array [String] = Array ("A","T","C","G")
-
-    // expected current for the k-mer-expected current mapping is defined arbitrarily between 0-1023
-    var current: Double = 0.0
-
-    //populating the k-mer-expected event for a 5-mer
-    for (i <- 0 to 3) {
-      for (j <- 0 to 3) {
-        for (k <- 0 to 3) {
-          for (l <- 0 to 3) {
-            for (m <- 0 to 3) {
-              val kmer: String = nucleotide(i) + nucleotide(j) + nucleotide(k) + nucleotide(l) + nucleotide(m)
-              kmerMap = kmerMap + (kmer -> current)
-              current += 1.0
-            }
-          }
-        }
-      }
-    }
-    kmerMap
-  }
-
-
+  val kmerModel: String = "data/6merModel.txt"
+  val kmerMap: Map[String, Double] = fileToMapZ(kmerModel)
 
   test("Indexing") {
 
-    val length: Int = 10
     val basesFile: String = "data/RandomBases.txt"
-    val kmerModel: String = "data/6merModel.txt"
-
-    //val kmerMap: Map[String,Double] = InitKmerMap()
-    val kmerMap: Map[String, Double] = fileToMap(kmerModel)
+    val length: Int = 10
 
     val nuclSequences: Array[String] = readBases(basesFile,length)
+    val nuclSeqList: List[Char] = readBasesList(basesFile)
 
     val vectorSet1: Array[Vector] = seqToVector(6,kmerMap,nuclSequences(0),10)
 
@@ -59,5 +32,53 @@ class IndexTest extends FunSuite {
     val kdTree: KDTreeNode[Vector] = KDTree.makeKDTree(vectorSet1)
 
   }
+
+  test("kdTree") {
+
+    val vector1: Vector = new Vector(Array(6,6))
+    val vector2: Vector = new Vector(Array(4,4))
+    val vector3: Vector = new Vector(Array(10,7))
+    val vector4: Vector = new Vector(Array(2,8))
+    val vector5: Vector = new Vector(Array(8,10))
+    val vector6: Vector = new Vector(Array(9,2))
+    val test1: Vector = new Vector(Array(5,3)) //nearest to vector2
+    val test2: Vector = new Vector(Array(7,5)) //nearest to vector1
+
+    val sequence: Array[Vector] = Array(vector1, vector2, vector3, vector4, vector5, vector5, vector6)
+    val kdTree: KDTreeNode[Vector] = KDTree.makeKDTree(sequence)
+
+    assert (KDTree.findNearestNeighbor(kdTree,test1,2) == vector2)
+    assert (KDTree.findNearestNeighbor(kdTree,test2, 2) == vector1)
+
+  }
+
+  var testList: List[Char] = List()
+  var eventArray: Array[Vector] = Array()
+
+  test ("readBaseList") {
+
+    //Read file and return a list of char
+    val filename: String = "data/Euglena gracilis half.fna"
+    testList = readBasesList(filename)
+    println (testList.head)
+
+  }
+
+  test ("Sequence to array of Vectors") {
+
+    eventArray = listToVector(6, kmerMap, testList, 6)
+    println("Vector 0")
+    eventArray(0).returnValue()
+    println("Vector 1")
+    eventArray(1).returnValue()
+    println("Vector 2")
+    eventArray(2).returnValue()
+    println("Vector 3")
+    eventArray(3).returnValue()
+
+  }
+
+
+
 
 }
