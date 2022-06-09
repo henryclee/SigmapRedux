@@ -35,6 +35,7 @@ package object helper {
     //first determine the variance, i.e. the sum of the squared differences from the mean
 
     var varianceSum: Double = 0.0
+
     for (key <- kmerSignalMap.keys) {
       varianceSum += Math.pow(kmerSignalMap(key) - mean,2)
     }
