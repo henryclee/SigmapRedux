@@ -1,7 +1,7 @@
 package index
 
 //Vector class, state variable tupleValue holds a tuple. The length of the tuple is defined upon creation
-class Vector (var tupleValue: Array[Double]){
+class Vector (var index: Int, var tupleValue: Array[Double]){
 
   //Returns the tupleValue --  may not be necessary?
   def returnValue(): Unit = {

@@ -1,5 +1,7 @@
 package preprocess
 
+import index.Vector
+
 import scala.io.{BufferedSource, Source}
 
 object Fast5Process {
@@ -41,6 +43,29 @@ object Fast5Process {
       signalList = (line.toDouble - mean)/stdDev :: signalList
     }
     signalList.reverse
+  }
+
+  //takes a fast5 file, and converts it into an array of vectors
+  def fast5ToVector (k: Int, kmerMap: Map [String,Double], filename: String, dim: Int): Array[Vector] = {
+
+    //First, Z-normalize the signals
+    val eventArray: List[Double] = f5ToListZ(filename)
+
+    //Calculate the total no of kmers and vectors
+    val kmerNo: Int = eventArray.length - k + 1
+    val vectorNo: Int = eventArray.length - k - dim + 2
+
+    val vectorSeq: Array[Vector] = new Array[Vector](vectorNo)
+
+    //This loop populates the vectorSeq with events as tuples
+    for (i <- 0 until vectorNo) {
+      val tempArray: Array[Double] = new Array[Double](dim)
+      for (j <- 0 until dim) {
+        tempArray(j) = eventArray(i+j)
+      }
+      vectorSeq(i) = new Vector(i, tempArray)
+    }
+    vectorSeq
   }
 
 }

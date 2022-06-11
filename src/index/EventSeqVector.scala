@@ -30,7 +30,7 @@ object EventSeqVector{
       for (j <- 0 until dim) {
         tempArray(j) = eventSeq(i+j)
       }
-      vectorSet(i) = new Vector(tempArray)
+      vectorSet(i) = new Vector(i, tempArray)
     }
     vectorSet
   }
@@ -65,7 +65,7 @@ object EventSeqVector{
       for (j <- 0 until dim) {
         tempArray(j) = eventSeq(i+j)
       }
-      vectorSet(i) = new Vector(tempArray)
+      vectorSet(i) = new Vector(i, tempArray)
     }
     vectorSet
   }

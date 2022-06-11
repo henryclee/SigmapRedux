@@ -24,33 +24,41 @@ class IndexTest extends FunSuite {
 
     val vectorSet1: Array[Vector] = seqToVector(6,kmerMap,nuclSequences(0),10)
 
-    //println (kmerMap("CATAGA"))
-    //println (kmerMap("ATAGCA"))
-    //vectorSet1(0).returnValue
+    for (i <- kmerMap.keys ) {
+      println(kmerMap(i))
+    }
 
     //Generate KD Tree
     val kdTree: KDTreeNode[Vector] = KDTree.makeKDTree(vectorSet1)
 
   }
 
-  test("kdTree") {
+  test("kdTree nearest neighbor") {
 
-    val vector1: Vector = new Vector(Array(6,6))
-    val vector2: Vector = new Vector(Array(4,4))
-    val vector3: Vector = new Vector(Array(10,7))
-    val vector4: Vector = new Vector(Array(2,8))
-    val vector5: Vector = new Vector(Array(8,10))
-    val vector6: Vector = new Vector(Array(9,2))
-    val test1: Vector = new Vector(Array(5,3)) //nearest to vector2
-    val test2: Vector = new Vector(Array(7,5)) //nearest to vector1
+    val vector1: Vector = new Vector(0,Array(6,6))
+    val vector2: Vector = new Vector(1, Array(4,4))
+    val vector3: Vector = new Vector(2, Array(10,7))
+    val vector4: Vector = new Vector(3, Array(2,8))
+    val vector5: Vector = new Vector(4, Array(8,10))
+    val vector6: Vector = new Vector(5, Array(9,2))
+    val test1: Vector = new Vector(6, Array(5,3)) //nearest to vector2
+    val test2: Vector = new Vector(7, Array(7,5)) //nearest to vector1
 
     val sequence: Array[Vector] = Array(vector1, vector2, vector3, vector4, vector5, vector5, vector6)
     val kdTree: KDTreeNode[Vector] = KDTree.makeKDTree(sequence)
 
-    assert (KDTree.findNearestNeighbor(kdTree,test1,2) == vector2)
-    assert (KDTree.findNearestNeighbor(kdTree,test2, 2) == vector1)
+    assert (KDTree.findNN(kdTree,test1,2) == vector2)
+    assert (KDTree.findNN(kdTree,test2, 2) == vector1)
+
+    val nearestRange1: List[Vector] = KDTree.findNNR(kdTree,test1,2, 10.0)
+    println ("testing nearest range1")
+    println (nearestRange1)
+    val nearestRange2: List[Vector] = KDTree.findNNR(kdTree,test2,2, 13.0)
+    println ("testing nearest range2")
+    println (nearestRange2)
 
   }
+
 
   var testList: List[Char] = List()
   var eventArray: Array[Vector] = Array()
@@ -77,8 +85,5 @@ class IndexTest extends FunSuite {
     eventArray(3).returnValue()
 
   }
-
-
-
 
 }

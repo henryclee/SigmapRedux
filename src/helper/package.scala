@@ -1,3 +1,5 @@
+import index.Vector
+
 import scala.::
 import scala.io.{BufferedSource, Source}
 
@@ -78,6 +80,15 @@ package object helper {
       }
     }
    returnList.reverse
+  }
+
+  //Given 2 vectors, returns the square of the norm squared, to avoid having to do a sqrt
+  def normSq (v1: Vector, v2: Vector) : Double = {
+    var norm2: Double = 0.0
+    for (i <- v1.tupleValue.indices) {
+      norm2 += Math.pow(v1.tupleValue(i) - v2.tupleValue(i),2)
+    }
+    norm2
   }
 
 }
