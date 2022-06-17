@@ -51,7 +51,6 @@ object Fast5Process {
 
     val numWindows: Int = eventArray.length - window + 1
 
-    //PRETTY SURE THIS IS WRONG
     var referenceArray: Array[Array[Double]] = Array.ofDim[Double](numWindows,2)
 
     //Iterate through the list of signals, and find the mean / std dev for each window
@@ -91,7 +90,6 @@ object Fast5Process {
       val pooledSDsq: Double = ((window-1)*Math.pow(refArray(index1)(1),2) + (window-1)*Math.pow(refArray(index2)(1),2)) / ((window*2)-2)
       val pooledSD: Double = Math.pow(pooledSDsq,.5)
       val tValue: Double = Math.abs((refArray(index1)(0) - refArray(index2)(0)) / (pooledSD * Math.pow(2/window.toDouble,.5)))
-      println ("T Value: " + tValue)
       tArray(i) = tValue
     }
     tArray
@@ -191,8 +189,6 @@ object Fast5Process {
       }
     }
     boundaryList = boundaryList.reverse
-
-    println ("Boundary list length: " + boundaryList.length)
 
     val eventList: List[Double] = makeEventList(signalArray, boundaryList)
 
